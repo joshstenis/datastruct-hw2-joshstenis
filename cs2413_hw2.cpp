@@ -2,11 +2,15 @@
 #include <cmath>
 using namespace std;
 
-class Course {
 
-        int capacity;
-        int *ptr_next;
-        int *ptr_prev;
+/**
+ * 
+ * NOTE: The acronym "DLL" will refer to "Doubly Linked List"
+ * 
+ */
+
+
+class Course {
 
         /**
          * Converts a string number into an integer -- (ex. "-140" == -140)
@@ -21,85 +25,61 @@ class Course {
             return val/10;
         }
 
+        /**
+         * This struct will be each node of the DLL
+         */
+        struct Node {
+            int capacity;
+            Node *ptr_next, *ptr_prev;
+        };
+
     public:
 
-        Course(int capactiy) {
-            this->capacity = capacity;
-        }
+        /**
+         * Insert an element into the doubly linked list if key is not already present
+         * @param key The value to be inserted into the DLL
+         */
+        void insert(int key) {
 
-        Course(int capactiy, int *prev) {
-            this->capacity = capacity;
-            this->ptr_prev = prev;
-        }
-
-        Course(int capactiy, int *next) {
-            this->capacity = capacity;
-            this->ptr_next = next;
-        }
-
-        Course(int capacity, int *prev, int *next) {
-            this->capacity = capacity;
-            this->ptr_next = next;
-            this->ptr_prev = prev;
-        }
-
-        /**
-         * Sets the integer value stored by the Course object
-         * @param capacity The integer value to be stored
-         */
-        void setCapacity(int capacity) {
-            this->capacity = capacity;
-        }
-        
-        /**
-         * Sets the Course object's pointer to next doubly linked list object
-         * @param next The pointer to be assigned to the ptr_next field
-         */
-        void setNext(int *next) {
-            this->ptr_next = next;
-        }
-        
-        /**
-         * Sets the Course object's pointer to previous doubly linked list object
-         * @param prev The pointer to be assigned to the ptr_prev field
-         */
-        void setPrev(int *prev) {
-            this->ptr_prev = prev;
-        }
-
-        /**
-         * Get the value stored in the Course object
-         * @return The integer value stored by the Course object
-         */
-        int getCapactiy() {
-            return this->capacity;
-        }
-        
-        /**
-         * Get the next Course object in the doubly linked list
-         * @return The pointer to the next Course object in the list
-         */
-        int *getNext() {
-            return this->ptr_next;
-        }
-        
-        /**
-         * Get the previous Course object in the doubly linked list
-         * @return The pointer to the previous Course object in the list
-         */
-        int *getPrev() {
-            return this->ptr_prev;
         }
 
         int main() {
-            string task, key, val;
-            cin >> task;
+            string task, key;
+            string val = "";
+            cin >> task;                    // Intake the task and seach key
             cin >> key;
 
             cin.ignore(1, '\n');
-            do {
+            Node *prev;
+            bool firstTime = true;
+
+            while(val != "s") {             // Create doubly linked list based on second line of string
                 cin >> val;
-                Course c (strToInt(val));
-            } while(val != "s");
+                Node tmp;
+
+                tmp.capacity = strToInt(val);
+                if(!firstTime) {
+                    Node previous = *prev;
+
+                    tmp.ptr_prev = previous.ptr_prev;
+                    previous.ptr_next = &tmp;
+                } firstTime = false;
+
+                prev = &tmp;
+            }
+
+            switch(strToInt(task)) {                // Execute proper task
+                case 0:
+
+                    // Binary search
+
+                    break;
+                case 1:
+
+                    // Insert / Delete
+
+                    break;
+                default: break;
+            }
         }
 };
