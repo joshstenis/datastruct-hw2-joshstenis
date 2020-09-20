@@ -13,6 +13,16 @@ using namespace std;
 class Course {
 
         /**
+         * This struct will be each node of the DLL
+         */
+        struct Node {
+            int capacity;
+            Node *ptr_next, *ptr_prev;
+        };
+
+        Node *head, *tail;
+
+        /**
          * Converts a string number into an integer -- (ex. "-140" == -140)
          * @param str The string number
          */
@@ -26,14 +36,6 @@ class Course {
         }
 
         /**
-         * This struct will be each node of the DLL
-         */
-        struct Node {
-            int capacity;
-            Node *ptr_next, *ptr_prev;
-        };
-
-        /**
          * Finds middle Node of a DLL whose head and tail Nodes are given
          * @param head The first element of the DLL
          * @param tail The last element of the DLL
@@ -42,7 +44,7 @@ class Course {
             Node *fast = head;
             Node *slow = head->ptr_next;
 
-            while(head != tail) {
+            while(fast != tail) {
                 fast = fast->ptr_next;
                 if(fast != tail) {
                     fast = fast->ptr_next;
@@ -53,6 +55,24 @@ class Course {
 
     public:
 
+        Course();
+
+        Course(Node*);
+
+        /**
+         * Adds elements to the end of the DLL
+         * @param new The Node to be added to the DLL
+         */
+        void append(Node n) {
+            if(this->head == NULL) this->head = &n;
+            else {
+                Node tmp;
+                while(tmp != *tail) {
+                    tmp = tmp.ptr_next;
+                }
+            }
+        }
+
         /**
          * Binary searches through the DLL whose head Node is given
          * @param head The first element of the DLL
@@ -62,6 +82,7 @@ class Course {
             Node *tail, *mid;
             do {
                 Node *mid = middle(head, tail);
+
                 if(mid == NULL) return NULL;                            // Null mid catch
                 else if(mid->capacity == key) return mid;               // Mid is the desired element
                 else if(mid->capacity < key) head = mid->ptr_next;      // Mid comes BEFORE the desired element in the DLL
@@ -79,7 +100,6 @@ class Course {
 
         int main() {
             string task, key;
-            string val = "";
             cin >> task;                    // Intake the task and seach key
             cin >> key;
 
@@ -88,20 +108,24 @@ class Course {
             Node *prev;
             bool firstTime = true;
 
+            string val = "";
             while(val != "s") {             // Create doubly linked list based on second line of string
                 cin >> val;
                 Node tmp;
+                Course *list = new Course();
 
                 tmp.capacity = strToInt(val);
-                if(!firstTime) {
-                    Node previous = *prev;
+                (*list).append(tmp);
 
-                    tmp.ptr_prev = previous.ptr_prev;
-                    previous.ptr_next = &tmp;
-                } else head = tmp;
 
-                firstTime = false;
-                prev = &tmp;
+                // if(!firstTime) {
+                    // Node previous = *prev;
+                    // tmp.ptr_prev = previous.ptr_prev;
+                    // previous.ptr_next = &tmp;
+                // } else Course list (&tmp);
+
+                // firstTime = false;
+                // prev = &tmp;
             }
 
             switch(strToInt(task)) {                // Execute proper task
