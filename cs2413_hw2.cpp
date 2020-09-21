@@ -18,6 +18,18 @@ class Course {
         struct Node {
             int capacity;
             Node *ptr_next, *ptr_prev;
+
+            /**
+             * Checks if two Node objects are the identical
+             * @param n The Node object to be compared to the first Node object ( Node.compare(Node) )
+             */
+            bool equals(Node n) {
+                if(this->capacity != n.capacity) return false;
+                else if(this->ptr_next != n.ptr_next) return false;
+                else if(this->ptr_prev != n.ptr_prev) return false;
+
+                return true;
+            }
         };
 
         Node *head, *tail;
@@ -64,12 +76,15 @@ class Course {
          * @param new The Node to be added to the DLL
          */
         void append(Node n) {
-            if(this->head == NULL) this->head = &n;
-            else {
-                Node tmp;
-                while(tmp != *tail) {
-                    tmp = tmp.ptr_next;
-                }
+            Node nCopy = n;
+            
+            if(this->head == NULL) {                // Empty DLL
+                this->head = &nCopy;
+                this->tail = this->head;
+            } else {                                // Non-Empty DLL
+                nCopy.ptr_prev = this->tail;
+                this->tail->ptr_next = &nCopy;
+                this->tail = &nCopy;
             }
         }
 
@@ -98,6 +113,14 @@ class Course {
             //
         }
 
+        /**
+         * Output the resulting DLL of the given task
+         * @param result A ptr to the DLL in question
+         */
+        void output(Course *result) {
+            //
+        }
+
         int main() {
             string task, key;
             cin >> task;                    // Intake the task and seach key
@@ -109,10 +132,10 @@ class Course {
             bool firstTime = true;
 
             string val = "";
-            while(val != "s") {             // Create doubly linked list based on second line of string
+            Course *list = new Course();
+            while(val != "s") {             // Populate doubly linked list based on second line of string
                 cin >> val;
                 Node tmp;
-                Course *list = new Course();
 
                 tmp.capacity = strToInt(val);
                 (*list).append(tmp);
