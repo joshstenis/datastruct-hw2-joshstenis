@@ -55,12 +55,14 @@ class Course {
         Node *middle(Node *head, Node *tail) {
             Node *fast = head;
             Node *slow = head->ptr_next;
+            static int index = 0;
 
             while(fast != tail) {
                 fast = fast->ptr_next;
                 if(fast != tail) {
                     fast = fast->ptr_next;
                     slow = slow->ptr_next;
+                    index++;
                 }
             } return slow;
         }
@@ -110,7 +112,11 @@ class Course {
          * @param result A ptr to the Node that has been dealt with ( value equal to key )
          */
         void output(Node *result) {
-            //
+            if(result == NULL) {
+                cout << "The given key has not been found in this list" << endl;
+            } else {
+                cout << "The given key " << (*result).capacity << " has been found in this list" << endl;
+            }
         }
 
         /**
