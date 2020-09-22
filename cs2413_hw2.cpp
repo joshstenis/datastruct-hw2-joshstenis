@@ -140,18 +140,6 @@ class Course {
         }
 
         /**
-         * Output the result of the given task
-         * @param result A ptr to the Node that has been dealt with ( value equal to key )
-         */
-        void output(Node *result) {
-            if(result == NULL) {
-                cout << "The given key has not been found in this list" << endl;
-            } else {
-                cout << "The given key " << result->capacity << " has been found in this list" << endl;
-            }
-        }
-
-        /**
          * Output the resulting DLL of the given task
          * @param result A ptr to the DLL in question
          */
@@ -163,6 +151,18 @@ class Course {
                 n = n->ptr_next;
                 cout << " " << n->capacity;
             } 
+        }
+
+        /**
+         * Output the result of the given task
+         * @param result A ptr to the Node that has been dealt with ( value equal to key )
+         */
+        void output(Node *result) {
+            if(result == NULL) {
+                cout << "The given key has not been found in this list" << endl;
+            } else {
+                cout << "The given key " << result->capacity << " has been found in this list" << endl;
+            }
         }
 };
 
