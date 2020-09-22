@@ -108,6 +108,14 @@ class Course {
         }
 
         /**
+         * Returns the head Node of the DLL
+         * @return The head Node of the DLL
+         */
+        Node *getHead() {
+            return head;
+        }
+
+        /**
          * Output the result of the given task
          * @param result A ptr to the Node that has been dealt with ( value equal to key )
          */
@@ -132,19 +140,16 @@ class Course {
             cin >> task;                    // Intake the task and seach key
             cin >> key;
 
-            cin.ignore(1, '\n');
-            Node head;
-            Node *prev;
-            bool firstTime = true;
-
             string val = "";
-            Course *list = new Course();
+            Course list = *(new Course());
+
+            cin.ignore(1, '\n');
             while(val != "s") {             // Populate doubly linked list based on second line of string
                 cin >> val;
                 Node tmp;
 
                 tmp.capacity = strToInt(val);
-                (*list).append(tmp);
+                list.append(tmp);
 
 
                 // if(!firstTime) {
@@ -160,7 +165,7 @@ class Course {
             switch(strToInt(task)) {                // Execute proper task
                 case 0:
                     
-                    Node *result = binarySearch(&head, strToInt(key));
+                    Node *result = binarySearch(list.getHead(), strToInt(key));
                     output(result);
 
                     break;
