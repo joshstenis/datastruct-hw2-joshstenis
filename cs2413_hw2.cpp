@@ -213,29 +213,29 @@ int main() {
     cin.ignore(1, '\n');
     while(!cin.fail()) {             // Populate doubly linked list based on second line of string
 
-        Node prev;
-        cin >> val;
-        prev.capacity = val;
+        // Node prev;
+        // cin >> val;
+        // prev.capacity = val;
 
-        Node curr;
-        cin >> val;
-        curr.capacity = val;
+        // Node curr;
+        // cin >> val;
+        // curr.capacity = val;
 
-        Node next;
-        cin >> val;
-        next.capacity = val;
+        // Node next;
+        // cin >> val;
+        // next.capacity = val;
 
-        if(firstTime) {
-            list->setHead(&prev);
-            firstTime = false;
-        }
+        // if(firstTime) {
+        //     list->setHead(&prev);
+        //     firstTime = false;
+        // }
 
-        prev.ptr_next = &curr;
+        // prev.ptr_next = &curr;
 
-        curr.ptr_prev = &prev;
-        curr.ptr_next = &next;
+        // curr.ptr_prev = &prev;
+        // curr.ptr_next = &next;
 
-        next.ptr_prev = &curr;
+        // next.ptr_prev = &curr;
     } cout << "POPULATED" << endl;
     list->output();
     cout << endl;
