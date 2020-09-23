@@ -16,6 +16,8 @@ struct Node {
     int capacity = 0;
     Node *ptr_next, *ptr_prev;
 
+    Node(int val) { val = capacity; }               // Constructor
+
     /**
      * Checks if two Node objects are the identical
      * @param n The Node object to be compared to the first Node object ( Node.compare(Node) )
@@ -84,6 +86,21 @@ class Course {
         //     }
         // }
 
+        void insertEnd(int capacity) {
+            Node *node = new Node(capacity);
+            
+            Node *head = this->getHead();
+            Node *tail = this->getTail();
+            
+            if(head == NULL) {              // If DLL empty
+                head = node;
+            } else {                        // If DLL not empty add Node to end
+                this->getTail()->ptr_next = node;
+                node->ptr_prev = this->getTail();
+                this->setTail(node);
+            }
+        }
+
         /**
          * Binary searches through the DLL whose head Node is given
          * @param head The first element of the DLL
@@ -137,6 +154,19 @@ class Course {
          */
         Node *getTail() {
             return tail;
+        }
+
+        /**
+         * Gets length of DLL
+         * @return THe length of the DLL
+         */
+        int length() {
+            Node *iter = this->getHead();
+            int i = 0;
+            while(iter != this->getTail()) {
+                i++;
+                iter = iter->ptr_next;
+            } return i;
         }
 
         /**
@@ -212,33 +242,15 @@ int main() {
 
     cin.ignore(1, '\n');
     while(!cin.fail()) {             // Populate doubly linked list based on second line of string
+        cin >> val;
+        list->insertEnd(val);
 
-        // Node prev;
-        // cin >> val;
-        // prev.capacity = val;
-
-        // Node curr;
-        // cin >> val;
-        // curr.capacity = val;
-
-        // Node next;
-        // cin >> val;
-        // next.capacity = val;
-
-        // if(firstTime) {
-        //     list->setHead(&prev);
-        //     firstTime = false;
-        // }
-
-        // prev.ptr_next = &curr;
-
-        // curr.ptr_prev = &prev;
-        // curr.ptr_next = &next;
-
-        // next.ptr_prev = &curr;
     } cout << "POPULATED" << endl;
-    list->output();
-    cout << endl;
+
+    cout << "DLL LENGTH: " << list->length() << endl;
+
+
+
 
     switch(strToInt(task)) {                // Execute proper task
         case 0:
