@@ -2,268 +2,131 @@
 #include <cmath>
 using namespace std;
 
-
-/**
- * 
- * NOTE: The acronym "DLL" will refer to "Doubly Linked List"
- * 
- */
-
-/**
- * This struct will be each node of the DLL
- */
-struct Node {
-    int capacity = 0;
-    Node *ptr_next, *ptr_prev;
-
-    Node(int val) { val = capacity; }               // Constructor
-
-    /**
-     * Checks if two Node objects are the identical
-     * @param n The Node object to be compared to the first Node object ( Node.compare(Node) )
-     */
-    bool equals(Node n) {
-        if(this->capacity != n.capacity) return false;
-        else if(this->ptr_next != n.ptr_next) return false;
-        else if(this->ptr_prev != n.ptr_prev) return false;
-
-        return true;
-    }
-};
-
-
 class Course {
-
-    private:
-        Node *head, *tail;
-
-        /**
-         * Finds middle Node of a DLL whose head and tail Nodes are given
-         * @param head The first element of the DLL
-         * @param tail The last element of the DLL
-         */
-        Node *middle(Node *head, Node *tail) {
-            Node *fast = head;
-            Node *slow = head->ptr_next;
-
-            cout << "MIDDLE STARTED...";
-
-            while(fast != tail) {
-                fast = fast->ptr_next;
-                if(fast != tail) {
-                    fast = fast->ptr_next;
-                    slow = slow->ptr_next;
-                }
-            } cout << " MIDDLE COMPLETE" << endl;
-            
-            return slow;
-        }
+    int capacity;
+    Course *next, *prev;
 
     public:
 
-        Course();
-
-        Course(Node*);
-
-        /**
-         * Adds elements to the end of the DLL
-         * @param new The Node to be added to the DLL
-         */
-        // void append(Node *n) {
-        //     Node nCopy;
-
-        //     nCopy.capacity = n->capacity;
-        //     nCopy.ptr_next = n->ptr_next;
-        //     nCopy.ptr_prev = n->ptr_prev;
-
-        //     if(this->head == NULL) {                // Empty DLL
-        //         this->head = &nCopy;
-        //         this->tail = this->head;
-        //     } else {                                // Non-Empty DLL
-        //         nCopy.ptr_prev = this->tail;
-        //         this->tail->ptr_next = &nCopy;
-        //         this->tail = &nCopy;
-        //     }
-        // }
-
-        void insertEnd(int capacity) {
-            Node *node = new Node(capacity);
-            
-            Node *head = this->getHead();
-            Node *tail = this->getTail();
-            
-            if(head == NULL) {              // If DLL empty
-                head = node;
-            } else {                        // If DLL not empty add Node to end
-                this->getTail()->ptr_next = node;
-                node->ptr_prev = this->getTail();
-                this->setTail(node);
-            }
+        Course(int cap) {
+            capacity = cap;
         }
 
-        /**
-         * Binary searches through the DLL whose head Node is given
-         * @param head The first element of the DLL
-         * @param key The value that is being searched for
-         */
-        Node *binarySearch(Node *head, Node *tail, int key) {
-            Node *h = head;
-            Node *t = tail;
-            Node *mid;
-
-            cout << "THE SEARCH HAS BEGUN..." << endl;
-
-            do {
-                Node *mid = middle(h, t);
-
-                if(mid == NULL) return NULL;                            // Null mid catch
-                else if(mid->capacity == key) return mid;               // Mid is the desired element
-                else if(mid->capacity < key) h = mid->ptr_next;         // Mid comes BEFORE the desired element in the DLL
-                else t = mid;                                           // Mid comes AFTER the desired element in the DLL
-            } while(t == NULL || h != t);
-            return NULL;
+        int getCap() {
+            return capacity;
         }
 
-        /**
-         * Sets the head of a DLL
-         * @param h The Node ptr to be set to the head of the DLL
-         */
-        void setHead(Node *h) {
-            head = h;
+        void setNext(Course *next) {
+            this->next = next;
         }
 
-        /**
-         * Sets the tail of a DLL
-         * @param t The Node ptr to be set to the tail of the DLL
-         */
-        void setTail(Node *t) {
-            tail = t;
+        void setPrev(Course *prev) {
+            this->prev = prev;
         }
 
-        /**
-         * Returns the head Node of the DLL
-         * @return The head Node of the DLL
-         */
-        Node *getHead() {
-            return head;
+        Course *getNext() {
+            return next;
         }
 
-        /**
-         * Returns the tail Node of the DLL
-         * @return The tail Node of the DLL
-         */
-        Node *getTail() {
-            return tail;
-        }
-
-        /**
-         * Gets length of DLL
-         * @return THe length of the DLL
-         */
-        int length() {
-            Node *iter = this->getHead();
-            int i = 0;
-            while(iter != this->getTail()) {
-                i++;
-                iter = iter->ptr_next;
-            } return i;
-        }
-
-        /**
-         * Output the resulting DLL of the given task
-         * @param result A ptr to the DLL in question
-         */
-        void output() {
-            Node *n = this->getHead();
-
-            cout << n->capacity;
-            while(n != this->getTail()) {
-                n = n->ptr_next;
-                cout << " " << n->capacity;
-            } 
-        }
-
-        /**
-         * Output the result of the given task
-         * @param result A ptr to the Node that has been dealt with ( value equal to key )
-         */
-        void output(Node *result) {
-            if(result == NULL) {
-                cout << "The given key has not been found in this list" << endl;
-            } else {
-                cout << "The given key " << result->capacity << " has been found in this list" << endl;
-            }
+        Course *getPrev() {
+            return prev;
         }
 };
 
-/**
- * CONSTRUCTOR for empty Course object ( DLL )
- */
-Course::Course() {
-    head = NULL;
-    tail = NULL;
+Course *getTail(Course **head) {
+    Course *iter = *head;
+    while(iter->getNext() != NULL)
+        iter = iter->getNext();
+    return iter;
 }
 
-/**
- * CONSTRUCTOR providing a head Node object
- * @param head Ptr to the head Node object of the DLL
- */
-Course::Course(Node *head) {
-    this->head = head;
-
-    Node *tmp = head;
-    while(tmp != NULL) {                        // Sets tail value to last element in DLL rabbit hole
-        if(tmp->ptr_next == NULL) break;
-        else tmp = tmp->ptr_next;
-    } tail = tmp;
+Course *getHead(Course **node) {
+    Course *iter = *node;
+    while(iter->getPrev() != NULL)
+        iter = iter->getPrev();
+    return iter;
 }
 
-/**
- * Converts a string number into an integer -- (ex. "-140" == -140)
- * @param str The string number
- */
-int strToInt(string str) {
-    int val = 0;
-    for(int i=0 ;i < str.length(); i++) {
-        if(str[i] != '-')
-            val += pow(10, str.length()-i) * (str[i] - 48);
-    } if(str[0] == '-') val *= -1;
-    return val/10;
+void insertEnd(Course **head, int capacity) {
+    Course *node = new Course(capacity);
+
+    if(*head == NULL) *head = node;
+    else {
+        Course *tail = getTail(head);
+        tail->setNext(node);
+        node->setPrev(tail);
+    }
+}
+
+Course *middle(Course **head) {
+    Course *fast = *head;
+    Course *slow = (*head)->getNext();
+
+    Course *tail = getTail(head);
+
+    cout << "MIDDLE STARTED...";
+
+    while(fast != tail) {
+        fast = fast->getNext();
+        if(fast != tail) {
+            fast = fast->getNext();
+            slow = slow->getNext();
+        }
+    } cout << " MIDDLE COMPLETE" << endl;
+    
+    return slow;
+}
+
+Course *binarySearch(Course **head, int key) {
+    Course *h = *head;
+    Course *t = getTail(head);
+    Course *mid;
+
+    cout << "THE SEARCH HAS BEGUN..." << endl;
+
+    do {
+        Course *mid = middle(head);
+
+        if(mid == NULL) return NULL;                            // Null mid catch
+        else if(mid->getCap() == key) return mid;               // Mid is the desired element
+        else if(mid->getCap() < key) h = mid->getNext();         // Mid comes BEFORE the desired element in the DLL
+        else t = mid;                                           // Mid comes AFTER the desired element in the DLL
+    } while(t == NULL || h != t);
+    return NULL;
+}
+
+void output(Course **result, int key) {
+    if(result == NULL) cout << "Value " << key << " was not found" << endl;
+    else cout << "Value " << key << " was found." << endl;
 }
 
 int main() {
-    string task, key;
-    cin >> task;                    // Intake the task and seach key
+    int task, key, val;
+    cin >> task;
     cin >> key;
-
-    int val;
-    bool firstTime = true;
-    Course *list = new Course();
-
     cin.ignore(1, '\n');
-    while(!cin.fail()) {             // Populate doubly linked list based on second line of string
-        cin >> val;
-        list->insertEnd(val);
 
+    Course *head = NULL;                // Create head node
+    cin >> val;
+    insertEnd(&head, val);
+
+    while(!cin.fail()) {                // Populate DLL based off head node
+        cin >> val;
+        insertEnd(&head, val);
     } cout << "POPULATED" << endl;
 
-    cout << "DLL LENGTH: " << list->length() << endl;
-
-
-
-
-    switch(strToInt(task)) {                // Execute proper task
+    switch(task) {                      // Complete assigned task
         case 0:
-            {
-                Node *result = list->binarySearch(list->getHead(), list->getTail(), strToInt(key));
-                cout << "SEARCH COMPLETE: " << result->capacity << endl;
-                list->output(result);
-            } break;
+        {
+            Course *result = binarySearch(&head, key);
+            output(&result, key);
+        } break;
+
         case 1:
-            {} break;
-            // Insert / Delete
+        {
+            // INSERT / DELETE
+        } break;
+
         default: break;
     }
-
-    return 0;
 }
