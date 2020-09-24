@@ -10,6 +10,8 @@ class Course {
 
         Course(int cap) {
             capacity = cap;
+            next = NULL;
+            prev = NULL;
         }
 
         int getCap() {
@@ -33,8 +35,8 @@ class Course {
         }
 };
 
-Course *getTail(Course **head) {
-    Course *iter = *head;
+Course *getTail(Course **node) {
+    Course *iter = *node;
     while(iter->getNext() != NULL)
         iter = iter->getNext();
     return iter;
@@ -58,17 +60,15 @@ void insertEnd(Course **head, int capacity) {
     }
 }
 
-Course *middle(Course **head) {
-    Course *fast = *head;
-    Course *slow = (*head)->getNext();
-
-    Course *tail = getTail(head);
+Course *middle(Course **start, Course **end) {
+    Course *fast = (*start)->getNext();
+    Course *slow = *start;
 
     cout << "MIDDLE STARTED...";
 
-    while(fast != tail) {
+    while(fast != *end) {
         fast = fast->getNext();
-        if(fast != tail) {
+        if(fast != *end) {
             fast = fast->getNext();
             slow = slow->getNext();
         }
@@ -80,12 +80,11 @@ Course *middle(Course **head) {
 Course *binarySearch(Course **head, int key) {
     Course *h = *head;
     Course *t = getTail(head);
-    Course *mid;
 
     cout << "THE SEARCH HAS BEGUN..." << endl;
 
     do {
-        Course *mid = middle(head);
+        Course *mid = middle(&h, &t);
 
         if(mid == NULL) return NULL;                            // Null mid catch
         else if(mid->getCap() == key) return mid;               // Mid is the desired element
@@ -98,6 +97,15 @@ Course *binarySearch(Course **head, int key) {
 void output(Course **result, int key) {
     if(result == NULL) cout << "Value " << key << " was not found" << endl;
     else cout << "Value " << key << " was found." << endl;
+}
+
+int dllLength(Course **head) {
+    Course *iter = *head;
+    int i = 0;
+    while(iter->getNext() != NULL) {
+        iter = iter->getNext();
+        i++;
+    } return i;
 }
 
 int main() {
@@ -113,7 +121,7 @@ int main() {
     while(!cin.fail()) {                // Populate DLL based off head node
         cin >> val;
         insertEnd(&head, val);
-    } cout << "POPULATED" << endl;
+    } cout << "POPULATED - LENGTH: " << dllLength(&head) << endl;
 
     switch(task) {                      // Complete assigned task
         case 0:
