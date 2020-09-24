@@ -101,9 +101,7 @@ Course *getHead(Course **node) {
  */
 Course *findSort(Course **head, int key) {
     Course *iter = *head;
-    while(iter->getNext() != NULL) {
-        if(iter->getCap() >= key)
-            break;
+    while(iter->getNext() != NULL && iter->getNext()->getCap() < key) {
         iter = iter->getNext();
     } return iter;
 }
@@ -121,10 +119,24 @@ void sortedInsert(Course **head, int capacity) {
         Course *node = findSort(head, capacity);
 
         newNode->setNext(node->getNext());
-
         node->setNext(newNode);
         newNode->setPrev(node);
     }
+}
+
+/**
+ * Returns the index of given key value in DLL
+ * @param head The head node of the DLL
+ * @param key The key value to be found
+ * @return The index of the DLL element containing given key value
+ */
+int getIndexOf(Course **head, Course **key) {
+    int i = 0;
+    Course *iter = *head;
+    while(iter->getNext() != NULL && iter->getCap() != (*key)->getCap()) {
+        i++;
+        iter = iter->getNext();
+    } return i;
 }
 
 /**
@@ -136,17 +148,13 @@ Course *middle(Course **start, Course **end) {
     Course *fast = (*start)->getNext();
     Course *slow = *start;
 
-    cout << "MIDDLE STARTED...";
-
     while(fast != *end) {
         fast = fast->getNext();
         if(fast != *end) {
             fast = fast->getNext();
             slow = slow->getNext();
         }
-    } cout << " MIDDLE COMPLETE" << endl;
-    
-    return slow;
+    } return slow;
 }
 
 /**
@@ -219,14 +227,13 @@ int main() {
         cin >> val;
         sortedInsert(&head, strToInt(val));
         
-    } cout << "POPULATED - LENGTH: " << dllLength(&head) << endl;
-    printDLL(&head); cout << endl;
+    }
 
     switch(task) {                      // Complete assigned task
         case 0:
         {
             Course *result = binarySearch(&head, key);
-            outputSearchResult(&result, key);
+            cout << getIndexOf(&head, &result);
         } break;
 
         case 1:
