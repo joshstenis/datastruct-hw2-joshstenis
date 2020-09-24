@@ -101,9 +101,9 @@ Course *getHead(Course **node) {
  */
 Course *findSort(Course **head, int key) {
     Course *iter = *head;
-    while(iter->getNext() != NULL && iter->getNext()->getCap() < key) {
+    while(iter->getNext() != NULL && iter->getNext()->getCap() < key)
         iter = iter->getNext();
-    } return iter;
+    return iter;
 }
 
 /**
@@ -121,6 +121,21 @@ void sortedInsert(Course **head, int capacity) {
         newNode->setNext(node->getNext());
         node->setNext(newNode);
         newNode->setPrev(node);
+    }
+}
+
+/**
+ * Insert nodes at the end of the DLL
+ * @param head The head of the DLL
+ * @param capacity The value of the new node
+ */
+void insertEnd(Course **head, int capacity) {
+    Course *node = new Course(capacity);
+    if(*head == NULL) *head = node;
+    else {
+            Course *tail = getTail(head);
+            tail->setNext(node);
+            node->setPrev(tail);
     }
 }
 
@@ -225,8 +240,7 @@ int main() {
 
     while(val != "s") {                // Populate DLL based off head node
         cin >> val;
-        sortedInsert(&head, strToInt(val));
-        
+        insertEnd(&head, strToInt(val));
     }
 
     switch(task) {                      // Complete assigned task
