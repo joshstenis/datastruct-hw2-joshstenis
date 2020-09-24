@@ -93,13 +93,19 @@ Course *getHead(Course **node) {
     return iter;
 }
 
-Course *getPredecessor(Course **node, int key) {
-    Course *iter = *node;
-    while(iter->getPrev() != NULL) {
-        if(iter->getCap() >= key) {
-            return iter;
-        } iter = iter->getPrev();
-    }
+/**
+ * Compares the given key to every node in DLL
+ * @param head The head node of the DLL
+ * @param key The value to be compared
+ * @return The first node found that is >= the key
+ */
+Course *findSort(Course **head, int key) {
+    Course *iter = *head;
+    while(iter->getNext() != NULL) {
+        if(iter->getCap() >= key)
+            break;
+        iter = iter->getNext();
+    } return iter;
 }
 
 /**
@@ -108,13 +114,16 @@ Course *getPredecessor(Course **node, int key) {
  * @param capacity The value to be stored in the node
  */
 void sortedInsert(Course **head, int capacity) {
-    Course *node = new Course(capacity);
+    Course *newNode = new Course(capacity);
 
-    if(*head == NULL) *head = node;
-    else {
-        Course *tail = getTail(head);
-        tail->setNext(node);
-        node->setPrev(tail);
+    if(*head == NULL) *head = newNode;          // If empty
+    else {                                                    // Otherwise
+        Course *node = findSort(head, capacity);
+
+        if((*head)->getNext() == NULL) newNode->setNext(node->getNext());
+
+        node->setNext(newNode);
+        newNode->setPrev(node);
     }
 }
 
@@ -184,6 +193,18 @@ int dllLength(Course **head) {
     } return i;
 }
 
+/**
+ * 
+ */
+void printDLL(Course **head) {
+    Course *iter = *head;
+    int i = 0;
+    while(iter->getNext() != NULL) {
+        cout << iter->getCap() << " ";
+        iter = iter->getNext();
+    }
+}
+
 int main() {
     int task, key;
     string val;
@@ -192,13 +213,13 @@ int main() {
     cin.ignore(1, '\n');
 
     Course *head = NULL;                // Create head node
-    cin >> val;
-    sortedInsert(&head, strToInt(val));
 
-    while(!cin.fail()) {                // Populate DLL based off head node
+    while(val != "s") {                // Populate DLL based off head node
         cin >> val;
         sortedInsert(&head, strToInt(val));
+        
     } cout << "POPULATED - LENGTH: " << dllLength(&head) << endl;
+    printDLL(&head);
 
     switch(task) {                      // Complete assigned task
         case 0:
