@@ -2,6 +2,20 @@
 #include <cmath>
 using namespace std;
 
+/**
+ * Converts a string number into an integer -- (ex. "-140" == -140)
+ * @param str The string number
+ */
+int strToInt(string str) {
+    int val = 0;
+    for(int i=0 ;i < str.length(); i++) {
+        if(str[i] != '-')
+            val += pow(10, str.length()-i) * (str[i] - 48);
+    } if(str[0] == '-') val *= -1;
+    
+    return val/10;
+}
+
 class Course {
     int capacity;
     Course *next, *prev;
@@ -79,12 +93,21 @@ Course *getHead(Course **node) {
     return iter;
 }
 
+Course *getPredecessor(Course **node, int key) {
+    Course *iter = *node;
+    while(iter->getPrev() != NULL) {
+        if(iter->getCap() >= key) {
+            return iter;
+        } iter = iter->getPrev();
+    }
+}
+
 /**
  * Inserts a node of given value at the end of given DLL
  * @param head The head of given DLL
  * @param capacity The value to be stored in the node
  */
-void insertEnd(Course **head, int capacity) {
+void sortedInsert(Course **head, int capacity) {
     Course *node = new Course(capacity);
 
     if(*head == NULL) *head = node;
@@ -162,18 +185,19 @@ int dllLength(Course **head) {
 }
 
 int main() {
-    int task, key, val;
+    int task, key;
+    string val;
     cin >> task;
     cin >> key;
     cin.ignore(1, '\n');
 
     Course *head = NULL;                // Create head node
     cin >> val;
-    insertEnd(&head, val);
+    sortedInsert(&head, strToInt(val));
 
     while(!cin.fail()) {                // Populate DLL based off head node
         cin >> val;
-        insertEnd(&head, val);
+        sortedInsert(&head, strToInt(val));
     } cout << "POPULATED - LENGTH: " << dllLength(&head) << endl;
 
     switch(task) {                      // Complete assigned task
