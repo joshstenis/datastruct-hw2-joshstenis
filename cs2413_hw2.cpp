@@ -180,6 +180,8 @@ Course *middle(Course **start, Course **end) {
 Course *binarySearch(Course **head, int key) {
     Course *h = *head;
     Course *t = getTail(head);
+    
+    if((*head)->getCap() < key || getTail(head)->getCap() > key) return NULL;
 
     do {
         Course *mid = middle(&h, &t);
@@ -231,9 +233,10 @@ void printDLL(Course **head) {
 
 int main() {
     int task, key;
-    string val;
+    string val, rawKey;
     cin >> task;
-    cin >> key;
+    cin >> rawKey;
+    key = strToInt(rawKey);
     cin.ignore(1, '\n');
 
     Course *head = NULL;                // Create head node
@@ -247,7 +250,8 @@ int main() {
         case 0:
         {
             Course *result = binarySearch(&head, key);
-            cout << getIndexOf(&head, &result);
+            if(result == NULL) cout << "-1";
+            else cout << getIndexOf(&head, &result);
         } break;
 
         case 1:
