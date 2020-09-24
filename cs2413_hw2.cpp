@@ -250,8 +250,8 @@ int main() {
         case 0:
         {
             Course *result = binarySearch(&head, key);
-            if(result == NULL) cout << "-1";
-            else cout << getIndexOf(&head, &result);
+            // if(result == NULL) cout << "-1";
+            cout << getIndexOf(&head, &result);
         } break;
 
         case 1:
