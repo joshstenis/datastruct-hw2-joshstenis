@@ -120,7 +120,7 @@ void sortedInsert(Course **head, int capacity) {
     else {                                                    // Otherwise
         Course *node = findSort(head, capacity);
 
-        if((*head)->getNext() == NULL) newNode->setNext(node->getNext());
+        newNode->setNext(node->getNext());
 
         node->setNext(newNode);
         newNode->setPrev(node);
@@ -170,7 +170,7 @@ Course *binarySearch(Course **head, int key) {
 }
 
 /**
- * DEBUGGING: Outputs the result of binary search
+ * Outputs the result of binary search
  * @param result The resulting
  * @param key The key value
  */
@@ -180,7 +180,7 @@ void outputSearchResult(Course **result, int key) {
 }
 
 /**
- * DEBUGGING: Returns the length of the given DLL
+ * Returns the length of the given DLL
  * @param head The head of the DLL
  * @return The length of the DLL
  */
@@ -194,7 +194,8 @@ int dllLength(Course **head) {
 }
 
 /**
- * 
+ * Prints out the DLL
+ * @param head The head node of the DLL
  */
 void printDLL(Course **head) {
     Course *iter = *head;
@@ -219,7 +220,7 @@ int main() {
         sortedInsert(&head, strToInt(val));
         
     } cout << "POPULATED - LENGTH: " << dllLength(&head) << endl;
-    printDLL(&head);
+    printDLL(&head); cout << endl;
 
     switch(task) {                      // Complete assigned task
         case 0:
@@ -230,7 +231,13 @@ int main() {
 
         case 1:
         {
-            // INSERT / DELETE
+            Course *searchResult = binarySearch(&head, key);
+            if(searchResult == NULL)
+                sortedInsert(&head, key);
+            else {
+                searchResult->getPrev()->setNext(searchResult->getNext());
+                searchResult->getNext()->setPrev(searchResult->getPrev());
+            } printDLL(&head);
         } break;
 
         default: break;
