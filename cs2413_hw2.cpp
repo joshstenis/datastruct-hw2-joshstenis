@@ -181,7 +181,7 @@ Course *binarySearch(Course **head, int key) {
     Course *h = *head;
     Course *t = getTail(head);
     
-    if((*head)->getCap() < key || getTail(head)->getCap() > key) return NULL;
+    // if((*head)->getCap() < key || getTail(head)->getCap() > key) return NULL;
 
     do {
         Course *mid = middle(&h, &t);
