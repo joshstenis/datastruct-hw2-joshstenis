@@ -233,10 +233,9 @@ void printDLL(Course **head) {
 
 int main() {
     int task, key;
-    string val, rawKey;
+    string val;
     cin >> task;
-    cin >> rawKey;
-    key = strToInt(rawKey);
+    cin >> key;
     cin.ignore(1, '\n');
 
     Course *head = NULL;                // Create head node
@@ -250,8 +249,8 @@ int main() {
         case 0:
         {
             Course *result = binarySearch(&head, key);
-            // if(result == NULL) cout << "-1";
-            cout << getIndexOf(&head, &result);
+            if(result == NULL) cout << "-1";
+            else cout << getIndexOf(&head, &result);
         } break;
 
         case 1:
